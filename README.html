@@ -54,30 +54,40 @@ ul.task-list li input[type="checkbox"] {
 <p>This is a short tutorial about how to create a RStudio singularity container on Nimbus Pawsey instance and execute it by running a RServer on the instance</p>
 <section id="how-to-createmodify-a-rstudio-singularity-container" class="level2">
 <h2 class="anchored" data-anchor-id="how-to-createmodify-a-rstudio-singularity-container">How to create/modify a RStudio Singularity container</h2>
-<p><strong>Base link</strong>: https://support.pawsey.org.au/documentation/display/US/Run+RStudio+Interactively</p>
-<section id="build-with-docker-container-image" class="level3">
-<h3 class="anchored" data-anchor-id="build-with-docker-container-image">Build with Docker container image</h3>
+<p><strong>Base link</strong>: <a href="https://support.pawsey.org.au/documentation/display/US/Run+RStudio+Interactively">Run RStudio Interactively</a></p>
+<section id="build-a-docker-container-image" class="level3">
+<h3 class="anchored" data-anchor-id="build-a-docker-container-image">Build a Docker container image</h3>
 <ul>
-<li><p>The command to build a docker image:<br>
-<code>sudo docker build -f BioCommons_Dockerfile_4.1.0_V4.0 -t rstudio:4.1.0.wCP .</code></p></li>
-<li><p>The above command requires a RStudio <code>Dockerfile</code>. Here the name of our Dockerfile is <code>BioCommons_Dockerfile_4.1.0_V4.0</code>.<br>
-</p></li>
-<li><p>Additional details about a RStudio Dockerfile for bioinformatics can be found <a href="https://support.pawsey.org.au/documentation/pages/viewpage.action?pageId=59476382#RunRStudioInteractively-2.2.1.BuildRStudiocontainer(R=4.1.0)">here</a></p></li>
+<li>A user on Nimbus instance does not have root privileges. Hence they cannot deploy a docker container directly. Instead they need to create a docker image and then convert the docker image into a singularity image to deploy it.<br>
+</li>
+<li>The command to build a docker image is as follows:<br>
+<code>sudo docker build -f BioCommons_Dockerfile_4.1.0_V4.0 -t rstudio:4.1.0.wCP .</code> The above command requires a RStudio <code>Dockerfile</code>. Here the name of our Dockerfile is <code>BioCommons_Dockerfile_4.1.0_V4.0</code> and the name of the Docker container image is <code>rstudio:4.1.0.wCP</code>.<br>
+</li>
+<li>Additional details about contents of a RStudio Dockerfile for bioinformatics can be found <a href="https://support.pawsey.org.au/documentation/pages/viewpage.action?pageId=59476382#RunRStudioInteractively-2.2.1.BuildRStudiocontainer(R=4.1.0)">here</a><br>
+</li>
+<li>Click on the Dockerfile name <a href="BioCommons_Dockerfile_4.1.0_V4.0">BioCommons_Dockerfile_4.1.0_V4.0</a> to view contents of the file used to create the Docker image for this workshop.</li>
 </ul>
 </section>
 <section id="update-a-docker-container-image-over-write" class="level3">
 <h3 class="anchored" data-anchor-id="update-a-docker-container-image-over-write">Update a Docker container image (over-write)</h3>
 <ul>
-<li>You can use the same name for a Docker image without deleting the existing one and Docker will take advantage of caching to build the new image efficiently.<br>
+<li>If you need to modify/update an existing docker image, you can use the same name for a Docker image without deleting the existing one. Docker will take advantage of caching to build the new image efficiently.<br>
 </li>
-<li>When you build an image with the same name as an existing image, Docker will only update the layers that have changed in your Dockerfile, and reuse the layers that haven’t changed. This helps save disk space because it doesn’t create entirely new images.</li>
+<li>When you build an image with the same name as an existing image, Docker will only update the layers that have changed in your Dockerfile, and reuse the layers that haven’t changed.<br>
+</li>
+<li>This helps save disk space because it doesn’t create entirely new images.</li>
 </ul>
 </section>
 <section id="pull-and-convert-the-docker-image-into-a-singularity-container" class="level3">
 <h3 class="anchored" data-anchor-id="pull-and-convert-the-docker-image-into-a-singularity-container">Pull and convert the Docker image into a Singularity container</h3>
-<p>A user on Nimbus instance does not have root privileges. Hence they cannot deploy a docker container. Instead they need convert the docker image into a singularity image and deploy it.</p>
-<p>The command to convert the docker image into a singularity image is:<br>
-<code>sudo singularity pull docker-daemon:rstudio:4.1.0.wCP</code></p>
+<ul>
+<li>The next step is to convert the docker container image into a singulairty container image.<br>
+</li>
+<li>The required command is:<br>
+<code>sudo singularity pull docker-daemon:rstudio:4.1.0.wCP</code><br>
+</li>
+<li>The output of the above command is a singularity container image file called <code>rstudio:4.1.0.wCP.sif</code></li>
+</ul>
 </section>
 <section id="run-with-docker" class="level3">
 <h3 class="anchored" data-anchor-id="run-with-docker">Run with Docker</h3>
@@ -89,14 +99,10 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="build-with-singularity" class="level3">
 <h3 class="anchored" data-anchor-id="build-with-singularity">Build with Singularity</h3>
-<p>To be tested</p>
+<p>Not tested</p>
 </section>
-<section id="run-with-singularity" class="level3">
-<h3 class="anchored" data-anchor-id="run-with-singularity">Run with Singularity</h3>
-<p>To be tested</p>
-</section>
-<section id="execute-the-container-to-start-the-rstudio-server" class="level3">
-<h3 class="anchored" data-anchor-id="execute-the-container-to-start-the-rstudio-server">Execute the container to start the Rstudio Server</h3>
+<section id="run-the-singularity-container-to-start-the-rstudio-server" class="level3">
+<h3 class="anchored" data-anchor-id="run-the-singularity-container-to-start-the-rstudio-server">Run the singularity container to start the Rstudio Server</h3>
 <ul>
 <li><p><strong>Step I</strong><br>
 <code>mkdir -p /home/ubuntu/rnaseq23/day2_RStudio/working_dir/rstudio-server</code></p></li>
@@ -109,6 +115,13 @@ ul.task-list li input[type="checkbox"] {
     -B /home/ubuntu/rnaseq23/day2_RStudio/working_dir:/home \
     rstudio_4.1.0.wCP.sif \
     rserver --auth-none=0 --auth-pam-helper-path=pam-helper --server-user ubuntu</code></pre>
+<p><strong>Note</strong> singularity exec invokes the container to run the rserver command.<br>
+- <code>-B</code> is a flag used to for bind-mounting.<br>
+- <code>/home/ubuntu/base_directory/working_directory</code> is a directory on your instance.<br>
+- <code>/home</code> is the container’s directory <code>/home/ubuntu/base_directory/working_directory</code> is bind-mounted to.<br>
+- Do not replace <code>/home</code>. You can replace <code>/home/ubuntu/base_directory/working_directory</code> with a directory of your choice, as long as it has user ownership.<br>
+- A folder called <code>rstudio</code> is automatically created inside the folder <code>/home/ubuntu/rnaseq23/day2_RStudio/working_dir</code> - All input files to be viewed from RStudio need to be placed in this folder <code>rstudio</code>.<br>
+- All outputs from your R session are saved to the <code>rstudio</code> folder.</p>
 </section>
 <section id="open-rstudio-from-a-browser" class="level3">
 <h3 class="anchored" data-anchor-id="open-rstudio-from-a-browser">Open RStudio from a browser</h3>
@@ -123,7 +136,8 @@ ul.task-list li input[type="checkbox"] {
 <section id="end-your-rstudio-session-and-server" class="level3">
 <h3 class="anchored" data-anchor-id="end-your-rstudio-session-and-server">End your RStudio session and server</h3>
 <p>If you ran RStudio from a container, stop the running command with ctrl+c:</p>
-<p>Or kill the process on the port: <code>lsof -ti:8787 | xargs kill -9</code> <code>lsof -ti:8787</code></p>
+<p>Or kill the process on the port: <code>lsof -ti:8787 | xargs kill -9</code><br>
+<code>lsof -ti:8787</code></p>
 </section>
 <section id="other-useful-commands" class="level3">
 <h3 class="anchored" data-anchor-id="other-useful-commands">Other useful commands</h3>
