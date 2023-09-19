@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.189">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>readme</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="README_files/libs/clipboard/clipboard.min.js"></script>
+<script src="README_files/libs/quarto-html/quarto.js"></script>
+<script src="README_files/libs/quarto-html/popper.min.js"></script>
+<script src="README_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="README_files/libs/quarto-html/anchor.min.js"></script>
+<link href="README_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="README_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="README_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="README_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="README_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+
+
+<section id="rstudio-rnaseq-container" class="level1">
+<h1>Rstudio-rnaseq-container</h1>
+<p>RStudio container for 2023 RNAseq workshop</p>
+</section>
+<section id="quickstart" class="level1">
+<h1>Quickstart</h1>
+<p>This is a short tutorial about how to create a RStudio singularity container on Nimbus Pawsey instance and execute it by running a RServer on the instance</p>
+<section id="how-to-createmodify-a-rstudio-singularity-container" class="level2">
+<h2 class="anchored" data-anchor-id="how-to-createmodify-a-rstudio-singularity-container">How to create/modify a RStudio Singularity container</h2>
+<p><strong>Base link</strong>: https://support.pawsey.org.au/documentation/display/US/Run+RStudio+Interactively</p>
+<section id="build-with-docker-container-image" class="level3">
+<h3 class="anchored" data-anchor-id="build-with-docker-container-image">Build with Docker container image</h3>
+<ul>
+<li><p>The command to build a docker image:<br>
+<code>sudo docker build -f BioCommons_Dockerfile_4.1.0_V4.0 -t rstudio:4.1.0.wCP .</code></p></li>
+<li><p>The above command requires a RStudio <code>Dockerfile</code>. Here the name of our Dockerfile is <code>BioCommons_Dockerfile_4.1.0_V4.0</code>.<br>
+</p></li>
+<li><p>Additional details about a RStudio Dockerfile for bioinformatics can be found <a href="https://support.pawsey.org.au/documentation/pages/viewpage.action?pageId=59476382#RunRStudioInteractively-2.2.1.BuildRStudiocontainer(R=4.1.0)">here</a></p></li>
+</ul>
+</section>
+<section id="update-a-docker-container-image-over-write" class="level3">
+<h3 class="anchored" data-anchor-id="update-a-docker-container-image-over-write">Update a Docker container image (over-write)</h3>
+<ul>
+<li>You can use the same name for a Docker image without deleting the existing one and Docker will take advantage of caching to build the new image efficiently.<br>
+</li>
+<li>When you build an image with the same name as an existing image, Docker will only update the layers that have changed in your Dockerfile, and reuse the layers that haven’t changed. This helps save disk space because it doesn’t create entirely new images.</li>
+</ul>
+</section>
+<section id="pull-and-convert-the-docker-image-into-a-singularity-container" class="level3">
+<h3 class="anchored" data-anchor-id="pull-and-convert-the-docker-image-into-a-singularity-container">Pull and convert the Docker image into a Singularity container</h3>
+<p>A user on Nimbus instance does not have root privileges. Hence they cannot deploy a docker container. Instead they need convert the docker image into a singularity image and deploy it.</p>
+<p>The command to convert the docker image into a singularity image is:<br>
+<code>sudo singularity pull docker-daemon:rstudio:4.1.0.wCP</code></p>
+</section>
+<section id="run-with-docker" class="level3">
+<h3 class="anchored" data-anchor-id="run-with-docker">Run with Docker</h3>
+<p>NA</p>
+</section>
+<section id="push-to-dockerhub" class="level3">
+<h3 class="anchored" data-anchor-id="push-to-dockerhub">Push to Dockerhub</h3>
+<p>To be done</p>
+</section>
+<section id="build-with-singularity" class="level3">
+<h3 class="anchored" data-anchor-id="build-with-singularity">Build with Singularity</h3>
+<p>To be tested</p>
+</section>
+<section id="run-with-singularity" class="level3">
+<h3 class="anchored" data-anchor-id="run-with-singularity">Run with Singularity</h3>
+<p>To be tested</p>
+</section>
+<section id="execute-the-container-to-start-the-rstudio-server" class="level3">
+<h3 class="anchored" data-anchor-id="execute-the-container-to-start-the-rstudio-server">Execute the container to start the Rstudio Server</h3>
+<ul>
+<li><p><strong>Step I</strong><br>
+<code>mkdir -p /home/ubuntu/rnaseq23/day2_RStudio/working_dir/rstudio-server</code></p></li>
+<li><p><strong>Step II</strong><br>
+</p></li>
+</ul>
+<pre><code>PASSWORD='abc' singularity exec \
+    -B /home/ubuntu/rnaseq23/day2_RStudio/working_dir/rstudio-server:/var/lib/rstudio-server \
+    -B /home/ubuntu/rnaseq23/day2_RStudio/working_dir/rstudio-server:/var/run/rstudio-server \
+    -B /home/ubuntu/rnaseq23/day2_RStudio/working_dir:/home \
+    rstudio_4.1.0.wCP.sif \
+    rserver --auth-none=0 --auth-pam-helper-path=pam-helper --server-user ubuntu</code></pre>
+</section>
+<section id="open-rstudio-from-a-browser" class="level3">
+<h3 class="anchored" data-anchor-id="open-rstudio-from-a-browser">Open RStudio from a browser</h3>
+<ul>
+<li>Open up a browser window</li>
+<li>Go to your instance IP address with the 8787 port, e.g.&nbsp;146.118.XX.XX:8787</li>
+<li>Enter the username you created, e.g.&nbsp;rstudio (or if using a container, ubuntu)</li>
+<li>Enter the password you gave it e.g <code>abc</code> as seen in the above command</li>
+<li>Run your R commands as you normally would</li>
+</ul>
+</section>
+<section id="end-your-rstudio-session-and-server" class="level3">
+<h3 class="anchored" data-anchor-id="end-your-rstudio-session-and-server">End your RStudio session and server</h3>
+<p>If you ran RStudio from a container, stop the running command with ctrl+c:</p>
+<p>Or kill the process on the port: <code>lsof -ti:8787 | xargs kill -9</code> <code>lsof -ti:8787</code></p>
+</section>
+<section id="other-useful-commands" class="level3">
+<h3 class="anchored" data-anchor-id="other-useful-commands">Other useful commands</h3>
+<ol type="1">
+<li>List all Docker containers (including stopped ones): <code>docker ps -a</code><br>
+</li>
+<li>Remove containers you no longer need: <code>docker container rm CONTAINER_ID</code><br>
+</li>
+<li>Clean the Singularity cache: <code>sudo singularity cache clean</code><br>
+The above command</li>
+</ol>
+<ul>
+<li>Is used to clean the Singularity cache.</li>
+<li>Singularity caches container images to speed up subsequent container operations by storing images locally.</li>
+<li>It will remove all cached container images from the cache directory.</li>
+<li><strong>Note</strong>: Running this command will delete all cached images, and you may need to re-download or rebuild the containers if they are required again in the future.</li>
+</ul>
+</section>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
