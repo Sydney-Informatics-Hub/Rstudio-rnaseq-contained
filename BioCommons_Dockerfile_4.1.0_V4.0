@@ -29,7 +29,9 @@ RUN install2.r --error --skipinstalled --ncpus -4 \
     rstudioapi \
     selectr \
     tibble \
-    tidyverse
+    tidyverse \
+    pheatmap \
+    ggnewscale
 
 RUN R -e 'devtools::install_github("stephenturner/annotables")'
 
