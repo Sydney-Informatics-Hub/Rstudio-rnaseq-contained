@@ -1,43 +1,51 @@
 # Rstudio rnaseq container
-RStudio singularity container for 2023 RNAseq workshop.   
-This is a short tutorial about how to create a RStudio singularity container on [Pawsey Nimbus](https://pawsey.org.au/systems/nimbus-cloud-service/) instance and execute it by running a RStudio server.  
+
+Singularity/Docker image to run RStudio with packages required for differential expression analysis with RNAseq data. This container provides a reproducible environment in which to perform differential expression and functional enrichment analyses in our [RNA differential expression R notebook](https://github.com/Sydney-Informatics-Hub/rnaseq-differential-expression-Rnotebook). 
+
+This image was used in the Australian BioCommons [Introduction to RNAseq workshop](https://sydney-informatics-hub.github.io/rnaseq-workshop-2023/) ran on 11-12th October 2023.
+
 If you have used this work for a publication, you must acknowledge SIH, e.g: "The authors acknowledge the technical assistance provided by the Sydney Informatics Hub, a Core Research Facility of the University of Sydney."
 
+# Build the container
 
-# Quickstart for Pawswey-Nimbus VM instance
+## Build with Docker
 
-**Base link**: [Run RStudio Interactively](https://support.pawsey.org.au/documentation/display/US/Run+RStudio+Interactively)
+Check out this repository with git and then build with Docker
 
-### Build a Docker container image
-- A user on Nimbus instance does not have root privileges. Hence they cannot deploy a docker container directly. Instead they need to create a docker image and then convert the docker image into a singularity image to deploy it.  
-- The command to build a docker image is as follows:  
-`sudo docker build -f BioCommons_Dockerfile_4.1.0_V4.0 -t rstudio:4.1.0 .` The above command requires a RStudio `Dockerfile`. Here the name of our Dockerfile is `BioCommons_Dockerfile_4.1.0_V4.0` and the name of the output Docker container image is `rstudio:4.1.0`.  
-- Additional details about contents of a RStudio Dockerfile for bioinformatics can be found [here](https://support.pawsey.org.au/documentation/pages/viewpage.action?pageId=59476382#RunRStudioInteractively-2.2.1.BuildRStudiocontainer(R=4.1.0))  
-- Click on the Dockerfile name [BioCommons_Dockerfile_4.1.0_V4.0](BioCommons_Dockerfile_4.1.0_V4.0) to view contents of the file used to create the Docker image for this workshop.
+```bash 
+git clone https://github.com/Sydney-Informatics-Hub/Rstudio-rnaseq-contained.git
+```
 
-### Pull and convert the Docker image into a Singularity container
-- The next step is to convert the docker container image into a singulairty container image.  
-- The required command is: `sudo singularity pull docker-daemon:rstudio:4.1.0`  
-- The output of the above command is a singularity container image file called `rstudio:4.1.0.sif`
+```bash
+sudo docker build . -t sydneyinformaticshub/rnaseq-rstudio:4.1.0
+```
+
+## Run with Docker
+
+To run this container, mount a directory housing your data (specify which paths you need to mount), and run the RStudio server instance with: 
+
+```bash 
+docker run -d -p 8787:8787 -e PASSWORD=yourpassword -v /path/on/host:/home/rstudio rocker/rstudio
+```
+
+* `-d` runs in a detached mode 
+* `-p 8787:8787` maps port 8787 in he container to 8787 on your host
+* `-e PASSWORD=yourpassword` sets the password you'll need to use to open this in your browser
+
+## Push to Dockerhub
+
+```
+sudo docker push sydneyinformaticshub/rnaseq-rstudio:4.1.0
+```
+
+## Build with Singularity 
+
+```bash 
+singularity pull docker://sydneyinformaticshub/rnaseq-rstudio:4.1.0
+```
+## Run with Singularity 
 
 
-### Run with Docker  
-NA
-
-### Push to Dockerhub
-- Login to dockerhub  
-  - Use command `docker login`
-  - Use credentials
-- List all Docker container images on your system  
-   `docker images`
-
-- Make sure you have tagged your image correctly with the full repository name and tag  
-  `docker tag sydneyinformaticshub/rstudio:4.1.0 sydneyinformaticshub/rstudio:4.1.0`
-
-- Push the docker image to the docker registry:  
-  `docker push sydneyinformaticshub/rstudio:4.1.0`
-  
-See the repo at [https://hub.docker.com/repository/docker/sydneyinformaticshub/rstudio/general](https://hub.docker.com/repository/docker/sydneyinformaticshub/rstudio/general)
 
 ### Pull a singularity container from the docker image
 `sudo singularity pull docker-daemon:rstudio:4.1.0`
@@ -104,6 +112,29 @@ The above command
 - This command creates a new image tag with the desired name and tag while keeping the original image intact.
 - After running this command, you'll have two tags pointing to the same image: rstudio:4.1.0.wCP and sydneyinformaticshub/rstudio:4.1.0.wCP. You can then push this newly tagged image to a Docker registry if needed.
 
+## Packages 
 
+The following R packages are installed in this image: 
+```default
+annotables
+biobroom
+biomaRt
+clusterProfiler
+DESeq2
+devtools
+dplyr
+edgeR
+ggnewscale
+ggplot2
+gplots
+factoextra
+limma
+org.Mm.eg.db
+pheatmap
+RColorBrewer
+rstudioapi
+tibble
+tidyverse
+```
 
 
