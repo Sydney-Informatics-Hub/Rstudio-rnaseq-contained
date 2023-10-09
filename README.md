@@ -47,12 +47,9 @@ singularity pull docker://sydneyinformaticshub/rnaseq-rstudio:4.1.0
 ```
 ## Run with Singularity 
 
-Create a temporary repository for 
-
 ```
 mkdir -p /tmp/rstudio-server`
 ```
-
 ``` 
 PASSWORD='yourpassword' singularity exec \
     -B /tmp/rstudio-server:/var/lib/rstudio-server \
