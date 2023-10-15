@@ -51,12 +51,12 @@ singularity pull docker://sydneyinformaticshub/rnaseq-rstudio:4.1.0
 mkdir -p /tmp/rstudio-server`
 ```
 ``` 
-PASSWORD='yourpassword' singularity exec \
+PASSWORD=$RSERVER_PASSWORD singularity exec \
     -B /tmp/rstudio-server:/var/lib/rstudio-server \
     -B /tmp/rstudio-server:/var/run/rstudio-server \
-    -B /home/ubuntu/working_directory/Day-2:/home \
-    rstudio_4.1.0.sif \
-    rserver --auth-none=0 --auth-pam-helper-path=pam-helper --server-user ubuntu
+     -B /home/training/Day-2:/home/training/ \
+    ~/Data/rstudio_4.1.0.sif \
+    rserver --auth-none=0 --auth-pam-helper-path=pam-helper --server-user training
 ```
 
 ## Run RStudio in your browser
