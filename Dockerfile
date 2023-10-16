@@ -8,7 +8,8 @@ LABEL com.example.version.is-production=""
 
 
 # Install system-level packages or dependencies required by other softwares or packages 
- 
+# Add additional package(s) one per line by using a the backlash (`\`) separater, as seen below 
+
 RUN apt-get update -qq && apt-get -y --no-install-recommends install \
   libxml2-dev \
   libcairo2-dev \
