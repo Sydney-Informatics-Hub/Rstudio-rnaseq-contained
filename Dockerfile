@@ -1,4 +1,13 @@
 FROM rocker/rstudio:4.1.0
+
+# Set one or more individual labels
+LABEL com.example.version="0.0.1"
+LABEL org.opencontainers.image.authors="Sydney Informatics Hub"
+LABEL com.example.release-date="2023-10-20"
+LABEL com.example.version.is-production=""
+
+
+# Install system-level packages or dependencies required by other softwares or packages 
  
 RUN apt-get update -qq && apt-get -y --no-install-recommends install \
   libxml2-dev \
@@ -15,6 +24,10 @@ RUN apt-get update -qq && apt-get -y --no-install-recommends install \
   default-jre \
   default-jdk
   
+
+# Install R packages related to data - manipulation, visualisation
+# Add additional package(s) one per line by using a the backlash (`\`) separater, as seen below   
+
 RUN install2.r --error --skipinstalled --ncpus -4 \
     --deps TRUE \
     caTools \
@@ -31,9 +44,14 @@ RUN install2.r --error --skipinstalled --ncpus -4 \
     tibble \
     tidyverse
 
+
+
 RUN R -e 'devtools::install_github("stephenturner/annotables")'
 
 RUN R -e 'remotes::install_github("HenrikBengtsson/matrixStats", ref="develop")'
+
+
+# Install Bioconductor related packages
 
 RUN R -e 'install.packages("BiocManager")'
 
