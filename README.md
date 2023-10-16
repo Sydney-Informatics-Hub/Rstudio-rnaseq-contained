@@ -57,8 +57,8 @@ mkdir -p /tmp/rstudio-server
 PASSWORD=$RSERVER_PASSWORD singularity exec \
     -B /tmp/rstudio-server:/var/lib/rstudio-server \
     -B /tmp/rstudio-server:/var/run/rstudio-server \
-     -B /home/training/Day-2:/home/training/ \
-    ~/Data/rstudio_4.1.0.sif \
+    -B /path/on/host:/home \
+    rnaseq-rstudio:4.1.0 \
     rserver --auth-none=0 --auth-pam-helper-path=pam-helper --server-user training
 ```
 
