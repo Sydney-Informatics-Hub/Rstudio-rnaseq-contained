@@ -36,7 +36,7 @@ docker run -p 8787:8787 \
 
 
 ## Build with Docker
-If you wish to recreate this docker image you can follow these steps for example.
+If you wish to recreate this docker image you can follow these steps, for example.
 
 Check out this repository with git:
 
@@ -48,6 +48,7 @@ git clone https://github.com/Sydney-Informatics-Hub/Rstudio-rnaseq-contained.git
 Then build with Docker:
 
 ```bash
+cd Rstudio-rnaseq-contained
 sudo docker build . -t sydneyinformaticshub/rnaseq-rstudio:4.1.0
 ```
 
@@ -61,12 +62,12 @@ sudo docker push sydneyinformaticshub/rnaseq-rstudio:4.1.0
 
 If you are on a machine with no Docker (like a HPC environment), you may wish to use [Singularity](https://docs.sylabs.io/guides/3.7/admin-guide/installation.html) as an alternative.
 
-Pull the image to build it locally. 
+Pull the image to build it on your host (or locally and copy the resulting image to the HPC). 
 
 ```bash 
 singularity pull docker://sydneyinformaticshub/rnaseq-rstudio:4.1.0
 ```
-This will create a contained image called `rstudio_4.1.0.sif` you can use to run.
+This will create a contained image called `rstudio_4.1.0.sif` you can use to run Rstudio.
 
 Next, make a scratch directory for Rstudio server on your host machine, e.g.
 
