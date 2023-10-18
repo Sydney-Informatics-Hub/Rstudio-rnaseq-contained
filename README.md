@@ -30,7 +30,7 @@ docker run -p 8787:8787 \
 
 ### Run RStudio in your browser
 
-- Open up a browser window with http://localhost:8787/ 
+- Open up a browser window at http://localhost:8787/ 
 - Enter the username: rstudio
 - Enter the password you gave it e.g `yourpassword` as seen in the above command
 
@@ -91,7 +91,17 @@ PASSWORD='yourpassword' singularity exec \
 * `-B $(pwd):/home/rstudio/` will mount a required wrtieable directory in the container. `pwd` is your current working folder. You can substitute any approriate directory for this.
 * `-B /tmp/rstudio-server:/var/lib/rstudio-server` and `-B /tmp/rstudio-server:/var/run/rstudio-server` mount additional required writeable directories.
 * `rstudio_4.1.0.sif` is the Singularity image file we built in the previous step.
-* `rserver --auth-none=0 --auth-pam-helper-path=pam-helper --server-user ubuntu` executes the command in the container, in this case "rserver" with various options. A key option here is the `--server-user ubuntu` which assumes the user on the host machine is called ubuntu, this is necessary with most Singularity setups to maintain the security mapping between users of the host and in the container.
+* `rserver --auth-none=0 --auth-pam-helper-path=pam-helper --server-user ubuntu` executes the command in the container, in this case "rserver" with various options. A key option here is the `--server-user ubuntu` which assumes the user on the host machine is called **ubuntu**, this is necessary with most Singularity setups to maintain the security mapping between users of the host and in the container.
+
+Assuming you are running Singularity on a headless remote server, you must ensure you connect to the host with port forwarding enabled if you wish to view the RStudio session on your local machine.
+
+For example to connect to a [Pawsey Nimbus](https://nimbus.pawsey.org.au/) machine add the additional `-L` flag in your `ssh` command to *forward port 8787*:
+
+```bash
+ssh -L 8787:localhost:8787 -i "your-ssh-key" ubuntu@123.456.789
+````
+
+Once connected, execute the above Singularity command and navigate a local web browser to http://localhost:8787/ 
 
 
 ## R packages 
