@@ -67,7 +67,7 @@ Pull the image to build it on your host (or locally and copy the resulting image
 ```bash 
 singularity pull docker://sydneyinformaticshub/rnaseq-rstudio:4.1.0
 ```
-This will create a contained image called `rstudio_4.1.0.sif` you can use to run Rstudio.
+This will create a contained image called `rnaseq-rstudio:4.1.0` you can use to run Rstudio.
 
 Next, make a scratch directory for Rstudio server on your host machine, e.g.
 
@@ -82,7 +82,7 @@ PASSWORD='yourpassword' singularity exec \
 	-B $(pwd):/home/rstudio/
     -B /tmp/rstudio-server:/var/lib/rstudio-server \
     -B /tmp/rstudio-server:/var/run/rstudio-server \
-    rstudio_4.1.0.sif \
+    rnaseq-rstudio:4.1.0 \
     rserver --auth-none=0 --auth-pam-helper-path=pam-helper --server-user ubuntu
 	
 ```
