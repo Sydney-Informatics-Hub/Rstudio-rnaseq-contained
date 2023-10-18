@@ -27,8 +27,6 @@ To run this container:
 docker run -p 8787:8787 \
     -e PASSWORD='yourpassword' \
     -v /path/on/host:/home/rstudio sydneyinformaticshub/rnaseq-rstudio:4.1.0
-```
-
 * `-p 8787:8787` maps port 8787 in the container to 8787 on your host
 * `-e PASSWORD=yourpassword` sets the password you'll need to use to open this in your browser
 
@@ -81,23 +79,22 @@ mkdir -p /tmp/rstudio-server
 
 Then launch the server similar to the docker command but with additional configuration options required:
 
-
 Set a password for your RStudio server:
 ```
 RSERVER_PASSWORD=$(openssl rand -base64 15)
 echo $RSERVER_PASSWORD
 ```
 Please notedown this PASSWORD as you will need when you log on to RStudio from a browser.
-
-To start the Rserver, run:
 ``` 
+Gene $RSERVER_PASSWORD
+
+
 PASSWORD=$RSERVER_PASSWORD singularity exec \
 	-B $(pwd):/home/rstudio/
     -B /tmp/rstudio-server:/var/lib/rstudio-server \
     -B /tmp/rstudio-server:/var/run/rstudio-server \
     rnaseq-rstudio:4.1.0 \
     rserver --auth-none=0 --auth-pam-helper-path=pam-helper --server-user ubuntu
-	
 ```
 
 * `PASSWORD='yourpassword' singularity exec` sets the password environment variable and then runs the `singularity exec` command.
