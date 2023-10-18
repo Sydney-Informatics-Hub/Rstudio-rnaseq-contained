@@ -79,12 +79,19 @@ Then launch the server similar to the docker command but with additional configu
 
 ``` 
 PASSWORD='yourpassword' singularity exec \
+	-B $(pwd):/home/rstudio/
     -B /tmp/rstudio-server:/var/lib/rstudio-server \
     -B /tmp/rstudio-server:/var/run/rstudio-server \
-    -B /home/ubuntu/working_directory/Day-2:/home \
     rstudio_4.1.0.sif \
     rserver --auth-none=0 --auth-pam-helper-path=pam-helper --server-user ubuntu
+	
 ```
+
+* `PASSWORD='yourpassword' singularity exec` sets the password environment variable and then runs the `singularity exec` command.
+* `-B $(pwd):/home/rstudio/` will mount a required wrtieable directory in the container. `pwd` is your current working folder. You can substitute any approriate directory for this.
+* `-B /tmp/rstudio-server:/var/lib/rstudio-server` and `-B /tmp/rstudio-server:/var/run/rstudio-server` mount additional required writeable directories.
+* `rstudio_4.1.0.sif` is the Singularity image file we built in the previous step.
+* `rserver --auth-none=0 --auth-pam-helper-path=pam-helper --server-user ubuntu` executes the command in the container, in this case "rserver" with various options. A key option here is the `--server-user ubuntu` which assumes the user on the host machine is called ubuntu, this is necessary with most Singularity setups to maintain the security mapping between users of the host and in the container.
 
 
 ## R packages 
