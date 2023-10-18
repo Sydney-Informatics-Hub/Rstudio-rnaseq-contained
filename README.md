@@ -58,7 +58,7 @@ Then push the image to dockerhub:
 sudo docker push sydneyinformaticshub/rnaseq-rstudio:4.1.0
 ```
 
-## Build with Singularity 
+## Run with Singularity 
 
 If you are on a machine with no Docker (like a HPC environment), you may wish to use [Singularity](https://docs.sylabs.io/guides/3.7/admin-guide/installation.html) as an alternative.
 
