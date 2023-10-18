@@ -17,7 +17,10 @@ Or
 
 ## Run with Docker
 
-To run this container, mount a directory housing your data (specify which paths you need to mount), and run the RStudio server instance with: 
+To run this container:
+
+- Start docker
+- Mount a directory housing your data (specify which paths you need to mount), and run the RStudio server instance using the following command: 
 
 ```bash 
 docker run -p 8787:8787 \
@@ -72,13 +75,16 @@ This will create a contained image called `rnaseq-rstudio:4.1.0` you can use to 
 Next, make a scratch directory for Rstudio server on your host machine, e.g.
 
 ```
-mkdir -p /tmp/rstudio-server`
+mkdir -p /tmp/rstudio-server
 ```
 
 Then launch the server similar to the docker command but with additional configuration options required:
 
 ``` 
-PASSWORD='yourpassword' singularity exec \
+Gene $RSERVER_PASSWORD
+
+
+PASSWORD=$RSERVER_PASSWORD singularity exec \
 	-B $(pwd):/home/rstudio/
     -B /tmp/rstudio-server:/var/lib/rstudio-server \
     -B /tmp/rstudio-server:/var/run/rstudio-server \
@@ -109,25 +115,27 @@ Once connected, execute the above Singularity command and navigate a local web b
 The following R packages are installed in this image: 
 
 ```default
-annotables
-biobroom
-biomaRt
-clusterProfiler
-DESeq2
-devtools
-dplyr
-edgeR
-ggnewscale
-ggplot2
-gplots
-factoextra
-limma
-org.Mm.eg.db
-pheatmap
-RColorBrewer
-rstudioapi
-tibble
-tidyverse
+
+DESeq2:1.32.0
+edgeR:3.34.1
+limma:3.48.3
+RColorBrewer:1.1.3
+gplots:3.1.3
+ggplot2:3.4.3
+factoextra:1.0.7
+devtools:2.4.5
+rstudioapi:0.15.0
+dplyr:1.1.2
+tibble:3.2.1
+tidyverse:2.0.0
+pheatmap:1.0.12
+biomaRt:2.48.3
+annotables:0.1.91
+org.Mm.eg.db:3.13.0
+biobroom:1.24.0
+clusterProfiler:4.0.5
+ggnewscale:0.4.9
+
 ```
 
 
