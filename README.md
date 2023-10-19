@@ -17,12 +17,22 @@ Or
 
 ## Run with Docker
 - If you are on your local machine, we recommend that you run this container using Docker.  
-- We have tested running this container using Docker on local mac machines and also on a Pawsey Nimbus instance.
+- We have tested this container using Docker on local mac machines and also on the Pawsey Nimbus cloud instance `Pawsey Bio - Ubuntu 22.04 - 2023-06`.
   
-### On a local (mac) machine
-To run this container:
-- Start docker
-- Mount a directory housing your data (specify which paths you need to mount), and run the RStudio server instance using the following command: 
+### On a local machine
+
+#### MacOS 
+- Please open a unix terminal window on mac by clicking on the `Terminal` app in the `Applications` menu.
+
+#### Windows
+- Please use a linux terminal emulator like [MobaXterm](https://mobaxterm.mobatek.net/) on windows. MobaXterm is not available on windows as a native application and needs to be installed.
+
+Once you are working in a unix/linux terminal window on your local machine, please follow the instructions below.
+
+To run this container:  
+
+- Start docker by `double-clicking` on the `Docker` app icon in the `Applications` menu. 
+- Run the RStudio server instance using the following command: 
 
 ```bash 
 docker run -p 8787:8787 \
@@ -30,21 +40,22 @@ docker run -p 8787:8787 \
     -v /path/on/host:/home/rstudio sydneyinformaticshub/rnaseq-rstudio:4.1.0
 ```
 * `-p 8787:8787` maps port 8787 in the container to 8787 on your host
-* `-e PASSWORD=yourpassword` sets the password you'll need to use to open this in your browser
+* `-e PASSWORD='yourpassword'` sets the password you'll need to use to open this in your browser
+* `-v /path/on/host:/home/rstudio` sets up a directory mount, which allows you to share data between your host machine and the Docker container.
 
 **Run RStudio in your browser**  
 
-You can now navigate a local web browser at http://localhost:8787/
+Open a web browser and enter http://localhost:8787/  in the address bar
 
 - Enter the username: `rstudio`
 - Enter the password you gave it e.g `yourpassword` as seen in the above command
 
-### On Pawsey Nimbus instance
-Assuming you are running Docker on a headless remote server, you must ensure you connect to the host with port forwarding enabled if you wish to view the RStudio session on your local machine.
+### Pawsey Nimbus cloud
+Assuming you are running Docker on a remote server without a graphical user interface (GUI), you must ensure you connect to the host with port forwarding enabled if you wish to view the RStudio session on your local machine.
 
 For example to connect to a [Pawsey Nimbus](https://nimbus.pawsey.org.au/) machine add the additional `-L` flag in your `ssh` command to *forward port 8787*:
 ```bash
-ssh -L 8787:localhost:8787 -i "your-ssh-key" ubuntu@146.118.69.202
+ssh -L 8787:localhost:8787 -i "your-ssh-key" ubuntu@146.118.XX.XXX
 ````
 Once connected, execute the above Docker command and navigate a local web browser at http://localhost:8787/ 
 
@@ -70,18 +81,14 @@ sudo docker build . -t sydneyinformaticshub/rnaseq-rstudio:4.1.0
 ```
 
 Then push the image to dockerhub:
-
-```
+```bash
 sudo docker push sydneyinformaticshub/rnaseq-rstudio:4.1.0
 ```
 
 ## Run with Singularity 
+The following steps can assist in running the container on a Pawsey Nimbus cloud.
 
-If you are on a machine with no Docker (like a HPC environment or a Pawsey Nimbus instance), you may wish to use [Singularity](https://docs.sylabs.io/guides/3.7/admin-guide/installation.html) as an alternative.
-
-The following steps can assist in running the container on a Pawsey NImbus instance.
-
-Pull the image to build it on your host (or locally and copy the resulting image to the host). 
+Pull the image to build it on your host (or locally, and copy the resulting image to the host). 
 
 ```bash 
 singularity pull docker://sydneyinformaticshub/rnaseq-rstudio:4.1.0
@@ -90,19 +97,19 @@ This will create a contained image called `rnaseq-rstudio:4.1.0` you can use to 
 
 Next, make a scratch directory for Rstudio server on your host machine, e.g.
 
-```
+```bash
 mkdir -p /tmp/rstudio-server
 ```
 
 Then launch the server similar to the docker command but with additional configuration options required:
 
 Set a password for your RStudio server:
-```
+```bash
 RSERVER_PASSWORD=$(openssl rand -base64 15)
 echo $RSERVER_PASSWORD
 ```
 Please notedown this RSERVER_PASSWORD as you will need when you log on to RStudio from a browser.
-``` 
+```bash
 PASSWORD=$RSERVER_PASSWORD singularity exec \
     -B $(pwd):/home/rstudio/
     -B /tmp/rstudio-server:/var/lib/rstudio-server \
@@ -117,13 +124,14 @@ PASSWORD=$RSERVER_PASSWORD singularity exec \
 * `rstudio_4.1.0.sif` is the Singularity image file we built in the previous step.
 * `rserver --auth-none=0 --auth-pam-helper-path=pam-helper --server-user ubuntu` executes the command in the container, in this case "rserver" with various options. A key option here is the `--server-user rstudio` which assumes the user on the host machine is called **rstudio**, this is necessary with most Singularity setups to maintain the security mapping between users of the host and in the container.
 
-Assuming you are running singularity on a headless remote server, you must ensure you connect to the host with port forwarding enabled if you wish to view the RStudio session on your local machine.
+Assuming you are running Docker on a remote server without a graphical user interface (GUI), you must ensure you connect to the host with port forwarding enabled if you wish to view the RStudio session on your local machine.
 For example to connect to a [Pawsey Nimbus](https://nimbus.pawsey.org.au/) machine add the additional `-L` flag in your `ssh` command to *forward port 8787*:
 ```bash
 ssh -L 8787:localhost:8787 -i "your-ssh-key" ubuntu@146.118.69.202
 ````
-Once connected, execute the above Singularity command and navigate a local web browser to http://localhost:8787/ 
-- Enter the username: `rstudio`
+Once connected, execute the above Singularity command and open a web browser and enter http://localhost:8787/ in the address bar.   
+
+- Enter the username: `rstudio`  
 - Enter the password you gave it e.g RSERVER_PASSWORD as seen in the above command
 
 
