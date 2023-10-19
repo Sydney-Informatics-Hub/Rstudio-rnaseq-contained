@@ -27,6 +27,7 @@ To run this container:
 docker run -p 8787:8787 \
     -e PASSWORD='yourpassword' \
     -v /path/on/host:/home/rstudio sydneyinformaticshub/rnaseq-rstudio:4.1.0
+```
 * `-p 8787:8787` maps port 8787 in the container to 8787 on your host
 * `-e PASSWORD=yourpassword` sets the password you'll need to use to open this in your browser
 
