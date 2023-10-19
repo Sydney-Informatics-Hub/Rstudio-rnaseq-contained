@@ -51,7 +51,7 @@ Open a web browser and enter http://localhost:8787/  in the address bar
 - Enter the password you gave it e.g `yourpassword` as seen in the above command
 
 ### On Pawsey Nimbus cloud
-Assuming you are running Docker on a remote server without a graphical user interface (GUI), you must ensure you connect to the host with port forwarding enabled if you wish to view the RStudio session on your local machine.
+Assuming you are running Docker on a remote server without a graphical user interface (GUI), you must ensure you connect to the host with port forwarding enabled in order to view the RStudio session on your local machine.
 
 For example to connect to a [Pawsey Nimbus](https://nimbus.pawsey.org.au/) machine add the additional `-L` flag in your `ssh` command to *forward port 8787*:
 ```bash
@@ -108,7 +108,6 @@ Set a password for your RStudio server:
 RSERVER_PASSWORD=$(openssl rand -base64 15)
 echo $RSERVER_PASSWORD
 ```
-Fix typo here and reword for clarity. I suggest:
 
 Take note of the password returned by your echo command. You will need this to log into RStudio in your browser.
 
@@ -128,7 +127,7 @@ PASSWORD=$RSERVER_PASSWORD singularity exec \
 * `rstudio_4.1.0.sif` is the Singularity image file we built in the previous step.
 * `rserver --auth-none=0 --auth-pam-helper-path=pam-helper --server-user ubuntu` executes the command in the container, in this case "rserver" with various options. A key option here is the `--server-user rstudio` which assumes the user on the host machine is called **rstudio**, this is necessary with most Singularity setups to maintain the security mapping between users of the host and in the container.
 
-Assuming you are running Docker on a remote server without a graphical user interface (GUI), you must ensure you connect to the host with port forwarding enabled if you wish to view the RStudio session on your local machine.
+Assuming you are running Singularity on a remote server without a graphical user interface (GUI), you must ensure you connect to the host with port forwarding enabled in order to view the RStudio session on your local machine.
 For example to connect to a [Pawsey Nimbus](https://nimbus.pawsey.org.au/) machine add the additional `-L` flag in your `ssh` command to *forward port 8787*:
 ```bash
 ssh -L 8787:localhost:8787 -i "your-ssh-key" ubuntu@146.118.XX.XXX
