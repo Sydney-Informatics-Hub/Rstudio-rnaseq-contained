@@ -81,7 +81,7 @@ If you are on a machine with no Docker (like a HPC environment or a Pawsey Nimbu
 
 The following steps can assist in running the container on a Pawsey NImbus instance.
 
-Pull the image to build it on your host (or locally and copy the resulting image to the HPC). 
+Pull the image to build it on your host (or locally and copy the resulting image to the host). 
 
 ```bash 
 singularity pull docker://sydneyinformaticshub/rnaseq-rstudio:4.1.0
