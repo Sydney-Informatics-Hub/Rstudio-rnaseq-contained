@@ -101,27 +101,23 @@ Set a password for your RStudio server:
 RSERVER_PASSWORD=$(openssl rand -base64 15)
 echo $RSERVER_PASSWORD
 ```
-Please notedown this PASSWORD as you will need when you log on to RStudio from a browser.
+Please notedown this RSERVER_PASSWORD as you will need when you log on to RStudio from a browser.
 ``` 
-Gene $RSERVER_PASSWORD
-
-
 PASSWORD=$RSERVER_PASSWORD singularity exec \
     -B $(pwd):/home/rstudio/
     -B /tmp/rstudio-server:/var/lib/rstudio-server \
     -B /tmp/rstudio-server:/var/run/rstudio-server \
     rnaseq-rstudio:4.1.0 \
-    rserver --auth-none=0 --auth-pam-helper-path=pam-helper --server-user ubuntu
+    rserver --auth-none=0 --auth-pam-helper-path=pam-helper --server-user rstudio
 ```
 
-* `PASSWORD='yourpassword' singularity exec` sets the password environment variable and then runs the `singularity exec` command.
+* `PASSWORD=$RSERVER_PASSWORD singularity exec` sets the password environment variable and then runs the `singularity exec` command.
 * `-B $(pwd):/home/rstudio/` will mount a required wrtieable directory in the container. `pwd` is your current working folder. You can substitute any approriate directory for this.
 * `-B /tmp/rstudio-server:/var/lib/rstudio-server` and `-B /tmp/rstudio-server:/var/run/rstudio-server` mount additional required writeable directories.
 * `rstudio_4.1.0.sif` is the Singularity image file we built in the previous step.
-* `rserver --auth-none=0 --auth-pam-helper-path=pam-helper --server-user ubuntu` executes the command in the container, in this case "rserver" with various options. A key option here is the `--server-user ubuntu` which assumes the user on the host machine is called **ubuntu**, this is necessary with most Singularity setups to maintain the security mapping between users of the host and in the container.
+* `rserver --auth-none=0 --auth-pam-helper-path=pam-helper --server-user ubuntu` executes the command in the container, in this case "rserver" with various options. A key option here is the `--server-user rstudio` which assumes the user on the host machine is called **rstudio**, this is necessary with most Singularity setups to maintain the security mapping between users of the host and in the container.
 
 Assuming you are running singularity on a headless remote server, you must ensure you connect to the host with port forwarding enabled if you wish to view the RStudio session on your local machine.
-
 For example to connect to a [Pawsey Nimbus](https://nimbus.pawsey.org.au/) machine add the additional `-L` flag in your `ssh` command to *forward port 8787*:
 ```bash
 ssh -L 8787:localhost:8787 -i "your-ssh-key" ubuntu@146.118.69.202
