@@ -16,23 +16,28 @@ Or
 
 
 ## Run with Docker
-- If you are on your local machine, we recommend that you run this container using Docker.  
-- We have tested this container using Docker on local mac machines and also on the Pawsey Nimbus cloud instance `Pawsey Bio - Ubuntu 22.04 - 2023-06`.
+
+We have tested this container using Docker on local mac machines and also on the Pawsey Nimbus cloud instance's image: [`Pawsey Bio - Ubuntu 22.04 - 2023-06`](https://support.pawsey.org.au/documentation/display/US/Nimbus+for+Bioinformatics). 
+
+If you are on your local machine, we recommend that you run this container using Docker. 
   
 ### On a local machine
 
 #### MacOS 
-- Please open a unix terminal window on mac by clicking on the `Terminal` app in the `Applications` menu.
+
+- Please open a terminal window on your machine by clicking on the `Terminal` app in the `Applications` menu.
 
 #### Windows
+
 - Please use a linux terminal emulator like [MobaXterm](https://mobaxterm.mobatek.net/) on windows. MobaXterm is not available on windows as a native application and needs to be installed.
 
 Once you are working in a unix/linux terminal window on your local machine, please follow the instructions below.
 
 To run this container:  
 
-- Start docker by `double-clicking` on the `Docker` app icon in the `Applications` menu. 
-- Run the RStudio server instance using the following command: 
+Start docker by double-clicking on the `Docker` app icon in the `Applications` menu. 
+
+Run the RStudio server instance using the following command: 
 
 ```bash 
 docker run -p 8787:8787 \
@@ -47,43 +52,23 @@ docker run -p 8787:8787 \
 
 Open a web browser and enter http://localhost:8787/  in the address bar
 
-- Enter the username: `rstudio`
-- Enter the password you gave it e.g `yourpassword` as seen in the above command
+* Enter the username: `rstudio`
+* Enter the password you gave it e.g `yourpassword` as seen in the above command
 
 ### On Pawsey Nimbus cloud
+
 Assuming you are running Docker on a remote server without a graphical user interface (GUI), you must ensure you connect to the host with port forwarding enabled in order to view the RStudio session on your local machine.
 
 For example to connect to a [Pawsey Nimbus](https://nimbus.pawsey.org.au/) machine add the additional `-L` flag in your `ssh` command to *forward port 8787*:
+
 ```bash
 ssh -L 8787:localhost:8787 -i "your-ssh-key" ubuntu@146.118.XX.XXX
-````
+```
+
 Once connected, execute the above Docker command and navigate a local web browser at http://localhost:8787/ 
 
 - Enter the username: `rstudio`
 - Enter the password you gave it e.g `yourpassword` as seen in the above command
-
-
-## Build with Docker
-If you wish to recreate this docker image you can follow these steps, for example.
-
-Check out this repository with git:
-
-```bash 
-git clone https://github.com/Sydney-Informatics-Hub/Rstudio-rnaseq-contained.git
-
-```
-
-Then build with Docker:
-
-```bash
-cd Rstudio-rnaseq-contained
-sudo docker build . -t sydneyinformaticshub/rnaseq-rstudio:4.1.0
-```
-
-Then push the image to dockerhub:
-```bash
-sudo docker push sydneyinformaticshub/rnaseq-rstudio:4.1.0
-```
 
 ## Run with Singularity
 
@@ -94,24 +79,26 @@ Pull the image to build it on your host (or locally, and copy the resulting imag
 ```bash 
 singularity pull docker://sydneyinformaticshub/rnaseq-rstudio:4.1.0
 ```
+
 This will create a contained image called `rnaseq-rstudio:4.1.0` you can use to run Rstudio.
 
-Next, make a scratch directory for Rstudio server on your host machine, e.g.
+Make a scratch directory for Rstudio server on your host machine:
 
 ```bash
 mkdir -p /tmp/rstudio-server
 ```
 
-
 Set a password for your RStudio server:
+
 ```bash
 RSERVER_PASSWORD=$(openssl rand -base64 15)
 echo $RSERVER_PASSWORD
 ```
 
-Take note of the password returned by your echo command. You will need this to log into RStudio in your browser.
+Take note of the password returned by the echo command. You will need this to log into RStudio in your browser.
 
 Run the RStudio server instance using the following command: 
+
 ```bash
 PASSWORD=$RSERVER_PASSWORD singularity exec \
     -B $(pwd):/home/rstudio/
@@ -124,26 +111,52 @@ PASSWORD=$RSERVER_PASSWORD singularity exec \
 * `PASSWORD=$RSERVER_PASSWORD singularity exec` sets the password environment variable and then runs the `singularity exec` command.
 * `-B $(pwd):/home/rstudio/` will mount a required wrtieable directory in the container. `pwd` is your current working folder. You can substitute any approriate directory for this.
 * `-B /tmp/rstudio-server:/var/lib/rstudio-server` and `-B /tmp/rstudio-server:/var/run/rstudio-server` mount additional required writeable directories.
-* `rstudio_4.1.0.sif` is the Singularity image file we built in the previous step.
-* `rserver --auth-none=0 --auth-pam-helper-path=pam-helper --server-user ubuntu` executes the command in the container, in this case "rserver" with various options. A key option here is the `--server-user rstudio` which assumes the user on the host machine is called **rstudio**, this is necessary with most Singularity setups to maintain the security mapping between users of the host and in the container.
+* `rnaseq-rstudio:4.1.0` is the Singularity image file we built in the previous step.
+* `rserver --auth-none=0 --auth-pam-helper-path=pam-helper --server-user rstudio` executes the command in the container, in this case "rserver" with various options.
+* `--server-user rstudio` assumes the user on the host machine is called **rstudio**, this is necessary with most Singularity setups to maintain the security mapping between users of the host and in the container.
 
 Assuming you are running Singularity on a remote server without a graphical user interface (GUI), you must ensure you connect to the host with port forwarding enabled in order to view the RStudio session on your local machine.
+
 For example to connect to a [Pawsey Nimbus](https://nimbus.pawsey.org.au/) machine add the additional `-L` flag in your `ssh` command to *forward port 8787*:
+
 ```bash
 ssh -L 8787:localhost:8787 -i "your-ssh-key" ubuntu@146.118.XX.XXX
-````
+```
+
 Once connected, execute the above Singularity command and open a web browser and enter http://localhost:8787/ in the address bar.   
 
 - Enter the username: `rstudio`  
-- Enter the password you gave it e.g RSERVER_PASSWORD as seen in the above command
+- Enter the password you gave it e.g the string returned by `echo $RSERVER_PASSWORD`
 
+## Build with Docker (SIH staff only)
+
+To recreate this Dockerfile you can follow these steps, for example.
+
+Check out this repository with git:
+
+```bash 
+git clone https://github.com/Sydney-Informatics-Hub/Rstudio-rnaseq-contained.git
+
+```
+
+Edit as required, then build with Docker:
+
+```bash
+cd Rstudio-rnaseq-contained
+sudo docker build . -t sydneyinformaticshub/rnaseq-rstudio:4.1.0
+```
+
+Push the image to dockerhub:
+
+```bash
+sudo docker push sydneyinformaticshub/rnaseq-rstudio:4.1.0
+```
 
 ## R packages 
 
 The following R packages are installed in this image: 
 
 ```default
-
 DESeq2:1.32.0
 edgeR:3.34.1
 limma:3.48.3
@@ -163,7 +176,6 @@ org.Mm.eg.db:3.13.0
 biobroom:1.24.0
 clusterProfiler:4.0.5
 ggnewscale:0.4.9
-
 ```
 
 
