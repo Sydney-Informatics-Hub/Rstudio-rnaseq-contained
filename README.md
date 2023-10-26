@@ -2,7 +2,7 @@
 
 Singularity/Docker image to run RStudio (v4.1.0) with packages required for differential expression analysis with RNAseq data. This container provides a reproducible environment in which to perform differential expression and functional enrichment analyses in our [RNA differential expression R notebook](https://github.com/Sydney-Informatics-Hub/rnaseq-differential-expression-Rnotebook). 
 
-This image was used in the Australian BioCommons [Introduction to RNAseq workshop](https://sydney-informatics-hub.github.io/rnaseq-workshop-2023/) ran on 11-12th October 2023.
+This image was used in the Australian BioCommons [Introduction to RNAseq workshop](https://sydney-informatics-hub.github.io/rnaseq-workshop-2023/) we ran on 11-12th October 2023.
 
 If you have used this work for a publication, you must acknowledge SIH, e.g: "The authors acknowledge the technical assistance provided by the Sydney Informatics Hub, a Core Research Facility of the University of Sydney."
 
@@ -42,8 +42,8 @@ Run the RStudio server instance using the following command:
 ```bash 
 docker run \
 	-p 8787:8787 \
-    -e PASSWORD='yourpassword' \
-    -v /path/on/host:/home/rstudio \
+	-e PASSWORD='yourpassword' \
+	-v /path/on/host:/home/rstudio \
 	sydneyinformaticshub/rnaseq-rstudio:4.1.0
 ```
 * `-p 8787:8787` maps port 8787 in the container to 8787 on your host machine.
@@ -98,7 +98,7 @@ PASSWORD='yourpassword' singularity exec \
     -B $(pwd):/home/rstudio/ \
     -B /tmp/rstudio-server:/var/lib/rstudio-server \
     -B /tmp/rstudio-server:/var/run/rstudio-server \
-    rnaseq-rstudio:4.1.0.sif \
+    rnaseq-rstudio_4.1.0.sif \
     rserver --auth-none=0 --auth-pam-helper-path=pam-helper --server-user ubuntu
 ```
 
